@@ -22,21 +22,31 @@ model Student {
   date          Int
   month         Int
   year          Int
-  departmentId  Int     @unique
+  departmentId  Int 
   division      String?
   yearOfJoining Int
   Attendance    Attendance?
   Department    Department @relation(fields: [departmentId], references: [id])
+  Fee           Fees?
 }
 
 model Teacher {
+  id              Int @id @default(autoincrement())
   username        String 
   email           String @unique
   password        String
+  allocations     Allocations[]
+}
+
+model Allocations{
+  teacherId       Int
+  departmentId    Int
   division        String
   subjectId       Int
   noOfClassTaken  Int
-  @@id([username, division])
+  teacher         Teacher @relation(fields: [teacherId], references: [id])
+  Department      Department @relation(fields: [departmentId], references: [id])
+  @@id([teacherId, departmentId ,division,subjectId])
 }
 
 model Attendance {
@@ -53,6 +63,7 @@ model Department{
   id          Int @default(autoincrement()) @id
   name        String
   student     Student[] 
+  allocation  Allocations[]
 }
 
 model Subject{
@@ -62,7 +73,35 @@ model Subject{
   attendence  Attendance[]
 }
 
-model Division{
+model Otp{
   id        Int @default(autoincrement()) @id
-  
+  email     String @unique
+  OTP       Int
+  password  String
+} 
+
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  messages  Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+}
+
+model Message {
+  id          Int      @id @default(autoincrement())
+  content     String
+  senderId    Int
+  receiverId  Int
+  timestamp   DateTime @default(now())
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id])
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id])
+}
+
+model Fees{
+  id          Int      @id @default(autoincrement())
+  usn         String         @unique
+  feePaid     Int
+  totalPaid   Int
+  student     Student @relation(fields: [usn],references: [usn])
 }

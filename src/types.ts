@@ -12,8 +12,13 @@ export type TeacherProps={
     username:string,
     email:string,
     password:string,
+}
+
+export type AllocationProps={
+    email:string,
     division:string,
-    subject:string
+    subject:string,
+    department:string
 }
 
 export enum RoleTypes{

@@ -1,0 +1,9 @@
+/adminSignIn
+/registerStudent
+/registerTeacher
+/studentSignIn
+/teacherSignIn
+/parentSignIn
+/forgotPasswordTeacher
+/forgotPasswordStudent
+/createDivision
